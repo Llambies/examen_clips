@@ -2,7 +2,7 @@
     (robot maxCajas 3 cajas)
 
     (pedido naranjas 2 cajas manzanas 6 cajas uvas 1 cajas)
-    (linea)
+    (linea naranjas 2 cajas manzanas 6 cajas uvas 1 cajas)
 
     (palet naranjas 3)
     (palet manzanas 56)
