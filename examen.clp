@@ -2,7 +2,8 @@
     (robot maxCajas 3 cajas)
 
     (pedido naranjas 2 cajas manzanas 3 cajas uvas 1 cajas)
-    (linea naranjas 2 cajas manzanas 3 cajas uvas 1 cajas)
+    (linea)
+
     (palet naranjas 3)
     (palet manzanas 3)
     (palet uvas 5)
@@ -25,6 +26,16 @@
     (pedido $?pedido)
     (linea $?pedido)
     =>
-    (printout t "No hay suficientes cajas en el stock")
+    (printout t "Pedido listo")
+    (halt)
+)
+
+(defrule mover_frutas_stock_vacio
+    (pedido $?ini ?tipo ?cuantas cajas $?fin)
+    (linea $?linea)
+    (robot maxCajas ?maxCajas cajas)
+    (not (linea $?ini2 ?tipo ?cuantas2 cajas $?fin2))
+    =>
+    (assert (linea $?linea ?tipo ?cuantas cajas))
     (halt)
 )
