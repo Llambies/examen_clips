@@ -1,5 +1,5 @@
 (deffacts factores
-    (robot maxCajas 3 cajas)
+    (robot maxCajas 3)
 
     (pedido naranjas 2 cajas manzanas 6 cajas uvas 1 cajas)
     (linea)
@@ -33,7 +33,7 @@
 (defrule mover_frutas_linea_vacia_no_max
     (pedido $?ini ?tipo ?cuantas cajas $?fin)
     (linea $?linea)
-    (robot maxCajas ?maxCajas cajas)
+    (robot maxCajas ?maxCajas)
     (test(not (member$ ?tipo $?linea)))
     (test(>= ?maxCajas ?cuantas))
     =>
@@ -43,7 +43,7 @@
 (defrule mover_frutas_linea_vacia_max
     (pedido $?ini ?tipo ?cuantas cajas $?fin)
     (linea $?linea)
-    (robot maxCajas ?maxCajas cajas)
+    (robot maxCajas ?maxCajas)
     (test(not (member$ ?tipo $?linea)))
     (test(<= ?maxCajas ?cuantas))
     =>
@@ -53,9 +53,17 @@
 (defrule mover_frutas
     (pedido $?ini ?tipo ?cuantas cajas $?fin)
     ?f <- (linea $?ini2 ?tipo ?cuantas2 cajas $?fin2)
-    (robot maxCajas ?maxCajas cajas)
-    (test(<= ?maxCajas =(- ?cuantas ?cuantas2)))
+    (robot maxCajas ?maxCajas)
+    (test (<= (- ?cuantas ?cuantas2) ?maxCajas))
     =>
-    (retract ?f)
     (assert (linea $?ini2 ?tipo =(- ?cuantas ?cuantas2) cajas $?fin2))
+)
+
+(defrule mover_frutas_max
+    (pedido $?ini ?tipo ?cuantas cajas $?fin)
+    ?f <- (linea $?ini2 ?tipo ?cuantas2 cajas $?fin2)
+    (robot maxCajas ?maxCajas)
+    (test (>= (- ?cuantas ?cuantas2) ?maxCajas))
+    =>
+    (assert (linea $?ini2 ?tipo (+ ?cuantas2 ?maxCajas) cajas $?fin2))
 )
